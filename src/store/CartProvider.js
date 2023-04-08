@@ -7,9 +7,7 @@ import { useState } from 'react';
 const CartProvider = (props) => {
     const[items,updateItems]=useState([]);
 
-//   const addItemToCartHandler = (item) => {
-//     updateItems([...items,item]);
-//   };
+
 
 const addItemToCartHandler = (item) => {
     console.log(item)
@@ -29,7 +27,24 @@ const addItemToCartHandler = (item) => {
   };
 
   const removeItemFromCartHandler = (id) => {
- 
+  console.log(id)
+    
+    const existingCartItemIndex = items.findIndex((item) => item.id === id);
+    if (existingCartItemIndex === -1) {
+      return;
+    }
+    const existingItem = items[existingCartItemIndex];
+  console.log(existingItem)
+    let updatedItems;
+    if (existingItem.quantity === 1) {
+      updatedItems = items.filter((item) => item.id !== id);
+    } else {
+      const updatedItem = { ...existingItem, quantity: existingItem.quantity - 1 };
+      updatedItems = [...items];
+      updatedItems[existingCartItemIndex] = updatedItem;
+    }
+  
+    updateItems(updatedItems);
   };
 
   const cartContext = {
